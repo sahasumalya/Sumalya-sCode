@@ -1,0 +1,142 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+	int a,b,weight;
+	struct node *next;
+};
+struct node *start=NULL,*start1=NULL;
+void addEdge(int p,int q,int r)
+{
+	printf("Executing\n");
+	if(start==NULL)
+	{
+		struct node *new_node=(struct node *)malloc(sizeof(struct node));
+		new_node->a=p;
+		new_node->b=q;
+		new_node->weight=q;
+		start=new_node;
+		start->next=NULL;
+	}
+	else
+	{
+		struct node *ptr=start,*spt;
+		struct node *new_node=(struct node *)malloc(sizeof(struct node));
+		new_node->a=p;
+		new_node->b=q;
+		new_node->weight=r;
+		while(r>ptr->weight)
+		{
+		  spt=ptr;
+		  ptr=ptr->next;
+		  if(ptr==NULL)
+		  break;	
+		}
+		if(ptr==NULL)
+		{
+			spt->next=new_node;
+			new_node->next=NULL;
+		}
+		else if(ptr==start)
+		{
+			new_node->next=start;
+			start=new_node;
+		}
+		else
+		{
+			spt->next=new_node;
+			new_node->next=ptr;
+		}
+		
+		
+		
+		
+	}
+}
+void display()
+{
+struct node *ptr4=start;
+while(ptr4!=NULL)
+{
+	printf("%d ----- %d [%d]\n",ptr4->a,ptr4->b,ptr4->weight);
+	ptr4=ptr4->next;
+}
+
+	
+}
+void krs(int v)
+{
+	struct node *ptr=start,*ptr2=start1;
+	while(ptr!=NULL)
+	{
+	
+	if(ptr2==NULL)
+	{
+		struct node *new_node=(struct node *)malloc(sizeof(struct node));
+		new_node->a=ptr->a;
+		new_node->b=ptr->b;
+		new_node->weight=ptr->weight;
+		start1=new_node;
+		ptr2=new_node;
+		start1->next=NULL;
+	}
+	else
+	{
+		struct node *ptr1=start1;
+		int flag1=0,flag2=0;
+		while(ptr1!=NULL)
+		{
+			if(ptr1->a== ptr->a || ptr1->b== ptr->a)
+			flag1=1;
+			if(ptr1->b== ptr->b || ptr1->b== ptr->b)
+			flag2=1;
+			if(flag1==1 && flag2==1)
+			break;
+			ptr1=ptr1->next;
+		}
+		if(flag1==0 || flag2==0)
+		{
+		struct node *new_node=(struct node *)malloc(sizeof(struct node));
+		new_node->a=ptr->a;
+		new_node->b=ptr->b;
+		new_node->weight=ptr->weight;
+		ptr2->next=new_node;
+		new_node->next=NULL;
+		ptr2=new_node;
+		
+		
+		}
+	}
+	ptr=ptr->next;
+	if(ptr==NULL)
+	printf("Hello\n");
+}
+
+struct node *ptr3=start1;
+while(ptr3!=NULL)
+{
+	printf("%d ----- %d [%d]\n",ptr3->a,ptr3->b,ptr3->weight);
+	ptr3=ptr3->next;
+}
+
+	
+}
+int main()
+{
+	addEdge(0, 1, 4);////////making the graph joining arg1 and arg2 with weight arg3
+	addEdge(0, 7, 8);
+	addEdge(1, 2, 8);
+	addEdge(1, 7, 11);
+	addEdge(2, 3, 7);
+	addEdge(2, 5, 4);
+	addEdge(2, 8, 2);
+	addEdge(3, 4, 9);
+	addEdge(3, 5, 14);
+	addEdge(4, 5, 10);
+	addEdge(5, 6, 2);
+	addEdge(6, 7, 1);
+    addEdge(6, 8, 6);
+    addEdge(7, 8, 7);
+   // display();//you may display the sorted edges
+    krs(9);//giving the no.of vertices
+
+}
