@@ -1,0 +1,188 @@
+using namespace std;
+#include<iostream>
+#include<list>
+class Graph{
+	int V;
+	list<int> *adj;
+	public:
+		int *weight,**edge,*vr;
+		Graph(int v);
+		void addEdge(int p,int q,int r);
+		void Bell(int s);
+		void kjs(int s);
+};
+Graph::Graph(int v)
+{
+	this->V=v;
+	weight=new int[V+1];
+	vr=new int[V+1];
+	edge=new int*[V+1];
+	adj=new list<int>[V+1];
+	for(int i=0;i<V+1;i++)
+	{
+	
+	edge[i]=new int[V+1];
+	weight[i]=999;
+	vr[i]=0;
+	for(int j=0;j<V+1;j++)
+	edge[i][j]=999;
+}
+	
+}
+void Graph::addEdge(int p,int q,int r)
+{
+	adj[p].push_back(q);
+	edge[p][q]=r;
+	vr[p]=1;
+}
+void Graph::Bell(int s)
+{
+	int parent[V];
+	for(int f=0;f<V;f++)
+	parent[f]=-1;
+	weight[s]=0;
+	list<int>::iterator k;
+	for(int i=0;i<V-1;i++)
+	{
+		//cout<<"outer";
+			for(int j=0;j<V+1;j++)
+			{
+				//cout<<"inner";
+				if(vr[j]==1)
+				{
+			//	cout<<"if";
+				
+				for(k=adj[j].begin();k!=adj[j].end();++k)
+				{
+					if(weight[*k]>weight[j]+edge[j][*k])
+					{
+				//	cout<<"if1";
+					weight[*k]=weight[j]+edge[j][*k];
+				//	cout<<"if2";
+					parent[*k]=j;
+				//	cout<<"if3";
+					
+				}
+				}
+			}
+			 	
+			}
+			for(int x=0;x<V;x++)
+			{
+				for(int y=0;y<V;y++)
+				{
+					edge[x][y]+=weight[x]-weight[y];
+				}
+			}
+		
+	}
+	cout<<"before bell\n";
+		for(int x=0;x<V;x++)
+		{
+		for(int y=0;y<V;y++)
+	    cout<<edge[x][y]<<"\n";
+	}
+	    cout<<"after bell\n";
+//	cout<<"hiii";
+	
+	
+}
+void Graph::kjs(int s)
+{
+	int visited[V];
+	int t=s;
+	int queue[V-1][2];
+	int parent[V-1];
+	for(int m=0;m<V-1;m++)
+	parent[m]=-1;
+	for(int i=0;i<V;i++)
+	visited[i]=0;
+	
+	this->weight[s]=0;
+	
+	visited[s]=1;
+	list<int>::iterator j;
+	for(int f=0;f<V-1;f++)
+	{
+		for(j=adj[t].begin();j!=adj[t].end();++j)
+		{
+			int r=weight[*j];
+			int q=edge[t][*j];
+			int p=weight[t];
+			if(r>p+q)
+			{
+				weight[*j]=p+q;
+				parent[*j]=t;
+			}
+	//	if()
+	//	{
+	//		weight[2]=weight[t]+edge[t,2]);
+	//		parent[2]=t;
+	//	}
+		
+		
+	}
+		int mini=999,pos=0;
+		
+		for(int k=0;k<V;k++)
+		{
+			if(visited[k]==0)
+			{
+				if(mini>weight[k])
+				{
+					mini=weight[k];
+					pos=k;
+				}
+			}
+		}
+		visited[pos]=1;
+		queue[f][0]=parent[pos];
+		queue[f][1]=pos;
+		t=pos;
+		cout<<pos<<"\n";
+	}
+	for(int x=0;x<V-1;x++)
+	{
+		for(int y=0;y<2;y++)
+		cout<<queue[x][y]<<" ";
+		cout<<"\n";
+	}
+	cout<<"Weights\n";
+	for(int z=0;z<V;z++)
+	cout<<z<<"-"<<weight[z]<<"\n";
+	
+	
+	
+}
+int main()
+{
+	Graph g(4);
+	g.addEdge(0, 1, -5);
+	g.addEdge(0, 2, 2);
+	g.addEdge(0, 3, 3);
+	g.addEdge(1, 2, 4);
+	g.addEdge(2, 3, 1);
+	g.addEdge(4, 0, 0);
+	g.addEdge(4, 1, 0);
+	g.addEdge(4, 2, 0);
+	g.addEdge(4, 3, 0);	
+	
+
+
+	cout << "Following is Breadth First Traversal "
+		<< "(starting from vertex 2) \n";
+	g.Bell(4);
+	cout<<"hehee\n";
+	g.kjs(0);
+	cout<<"hehee\n";
+	g.kjs(1);
+	cout<<"hehee\n";
+	g.kjs(2);
+	cout<<"hehee\n";
+	g.kjs(3);
+
+	return 0;
+	
+}
+
+
