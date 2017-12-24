@@ -1,0 +1,132 @@
+using namespace std;
+#include<iostream>
+#include<list>
+class Graph
+{
+	int V;
+	list<int> *adj;
+	int **edge;
+	int *weight;
+	public:
+	    
+		Graph(int v);
+		void addEdge(int p,int q,int r);
+		void kjs(int s);
+};
+Graph::Graph(int v)
+{
+	this->V=v;
+	adj=new list<int>[V];
+	weight=new int[V];
+	edge=new int*[V];
+	for(int z=0;z<V;z++)
+	edge[z]=new int[V];
+	for(int i=0;i<V;i++)
+	{
+		this->weight[i]=999;
+		for(int j=0;j<V;j++)
+		this->edge[i][j]=999;
+	}
+}
+void Graph::addEdge(int p,int q,int r)
+{
+	adj[p].push_back(q);
+	adj[q].push_back(p);
+	edge[p][q]=r;
+	edge[q][p]=r;
+	
+}
+void Graph::kjs(int s)
+{
+	int visited[V];
+	int t=s;
+	int queue[V-1][2];
+	int parent[V-1];
+	for(int m=0;m<V-1;m++)
+	parent[m]=-1;
+	for(int i=0;i<V;i++)
+	visited[i]=0;
+	
+	this->weight[s]=0;
+	
+	visited[s]=1;
+	list<int>::iterator j;
+	for(int f=0;f<V-1;f++)
+	{
+		for(j=adj[t].begin();j!=adj[t].end();++j)
+		{
+			int r=weight[*j];
+			int q=edge[t][*j];
+			int p=weight[t];
+			if(r>p+q)
+			{
+				weight[*j]=p+q;
+				parent[*j]=t;
+			}
+	//	if()
+	//	{
+	//		weight[2]=weight[t]+edge[t,2]);
+	//		parent[2]=t;
+	//	}
+		
+		
+	}
+		int mini=999,pos=0;
+		
+		for(int k=0;k<V;k++)
+		{
+			if(visited[k]==0)
+			{
+				if(mini>weight[k])
+				{
+					mini=weight[k];
+					pos=k;
+				}
+			}
+		}
+		visited[pos]=1;
+		queue[f][0]=parent[pos];
+		queue[f][1]=pos;
+		t=pos;
+		cout<<pos<<"\n";
+	}
+	for(int x=0;x<V-1;x++)
+	{
+		for(int y=0;y<2;y++)
+		cout<<queue[x][y]<<" ";
+		cout<<"\n";
+	}
+	cout<<"Weights\n";
+	for(int z=0;z<V;z++)
+	cout<<z<<"-"<<weight[z]<<"\n";
+	
+	
+	
+}
+int main()
+{
+	Graph g(9);//giving total no.of vertices
+	g.addEdge(0, 1, 4);/////making the graph by joining arg1 with arg2 by weight arg3
+	g.addEdge(0, 7, 8);
+	g.addEdge(1, 2, 8);
+	g.addEdge(1, 7, 11);
+	g.addEdge(2, 3, 7);
+	g.addEdge(2, 5, 4);
+	g.addEdge(2, 8, 2);
+	g.addEdge(3, 4, 9);
+	g.addEdge(3, 5, 14);
+	g.addEdge(4, 5, 10);
+	g.addEdge(5, 6, 2);
+	g.addEdge(6, 7, 1);
+    g.addEdge(6, 8, 6);
+    g.addEdge(7, 8, 7);
+
+
+	cout << "Following is Breadth First Traversal "
+		<< "(starting from vertex 2) \n";
+	g.kjs(0);//source vertex is zero
+
+	return 0;
+	
+}
+
